@@ -1,0 +1,17 @@
+[Unit]
+Description=Let's Note Wheelpad Scroll Daemon (Wayland)
+Documentation=https://zenn.dev/kuroikotech/articles/wheelpad-daemon
+After=systemd-udevd.service
+ConditionPathExists=/dev/uinput
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/bin/wheelpad.py --config /etc/wheelpad/config.toml
+Restart=always
+RestartSec=2
+Environment=PYTHONUNBUFFERED=1
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

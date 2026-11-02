@@ -1,0 +1,6 @@
+# Let's Note ホイールパッド用の仮想タッチパッドを「内蔵タッチパッド」として扱わせる。
+# これがないと libinput のパーム検出と「入力中はタッチパッドを無効化」が効かない。
+#
+# config.toml の [device] pad_name を変えたら、ここの名前も合わせる。
+ACTION=="add|change", SUBSYSTEM=="input", ATTRS{name}=="LetsNote-Virtual-Touchpad", \
+  ENV{ID_INPUT_TOUCHPAD}="1", ENV{ID_INPUT_TOUCHPAD_INTEGRATION}="internal"

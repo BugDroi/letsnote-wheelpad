@@ -1,0 +1,60 @@
+# /etc/wheelpad/config.toml
+# Let's Note ホイールパッド設定（Panasonic Let's Note CF-SV1 初期値）
+#
+# 値を詰めるときは:
+#   sudo wheelpad.py --probe           # ABS 範囲・中心・デッドゾーンを表示
+#   sudo wheelpad.py --debug           # タッチ位置とスクロール量をログ出力
+#   systemctl stop wheelpad.service    # 調整中はサービスを止めておく
+
+[device]
+# evtest / --list-devices で確認したデバイス名（部分一致）
+name = "Synaptics TM3562-003"
+
+# /dev/input/eventX を直接指定したいときだけ埋める（name より優先）
+path = ""
+
+# 仮想デバイスの名前。
+# 名前に "Touchpad" を含めると `omarchy-toggle-touchpad` が効くようになる。
+pad_name = "LetsNote-Virtual-Touchpad"
+scroll_name = "LetsNote-Virtual-Wheel"
+
+[wheelpad]
+# -1 = ABS 範囲の中央を自動計算（通常はこのままで OK）
+center_x = -1
+center_y = -1
+
+# 中心からこの距離より外に触れたらスクロールモード。
+# 0 にすると deadzone_ratio が使われる。
+deadzone = 0
+
+# パッド半径（短い辺の半分）に対するデッドゾーンの割合。
+# CF-SV1 の実測値 195 / 264 ≒ 0.74
+deadzone_ratio = 0.74
+
+# スクロール 1 ステップに必要な累積角度 (rad)
+sensitivity = 0.30
+
+# 高解像度スクロール 1 ステップの値（120 = 標準 1 ノッチ）
+hires_step = 60
+
+# スクロール方向を反転したい場合 true（Hyprland 側で natural_scroll を
+# 有効にしている場合はここも true にしないと方向が揃わない）
+natural_scroll = false
+
+# この本数以上の指でなぞると水平スクロール
+horizontal_fingers = 2
+
+[speed]
+# 角速度 (rad/s) が velocity 以上なら multiplier 倍でスクロール
+thresholds = [
+  { velocity = 8.0, multiplier = 4.0 },
+  { velocity = 4.0, multiplier = 3.0 },
+  { velocity = 2.0, multiplier = 2.0 },
+]
+
+[inertia]
+# 指を離したあともスクロールを続ける
+enabled = false
+friction = 0.92
+min_velocity = 0.5
+interval = 0.016
